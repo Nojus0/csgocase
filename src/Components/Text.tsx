@@ -1,5 +1,5 @@
 import { styled } from "solid-styled-components"
-import { TextAlignProperty } from "csstype"
+import { TextAlignProperty, FontWeightProperty } from "csstype"
 export const MainText = styled("h1")({
     margin: 0,
     marginTop: ".35rem",
@@ -14,11 +14,12 @@ export const MainText = styled("h1")({
 interface ISecondText {
     shadow?: boolean,
     size?: string,
-    align?: TextAlignProperty
+    align?: TextAlignProperty,
+    fontWeight?: FontWeightProperty
 }
 
-export const SecondText = styled("p")(({ shadow = true, size = "0.90rem", align = "initial" }: ISecondText) => ({
-    fontWeight: 300,
+export const SecondText = styled("p")(({ shadow = true, size = "0.90rem", align = "initial", fontWeight = 400 }: ISecondText) => ({
+    fontWeight,
     minHeight: size,
     fontSize: size,
     textAlign: align != "initial" ? align : "initial",

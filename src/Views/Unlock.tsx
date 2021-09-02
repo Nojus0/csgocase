@@ -1,4 +1,4 @@
-import { Component, For } from "solid-js";
+import { Component, createSignal, For, onCleanup, onMount, Show } from "solid-js";
 import { styled } from "solid-styled-components";
 import Case from "../Components/Case";
 import { GreenButton, TextButton } from "../Components/Buttons";
@@ -8,20 +8,43 @@ import { buttonEvents } from "../Interfaces/Events";
 import { MediumSpan, SecondText } from "../Components/Text";
 import UndragableImage from "../Utils/UndragableImage";
 import { ICompleteCase } from "../Interfaces/WeaponCase";
+import { ContextMenu, pos, setPos, setShow } from "../Components/ContextMenu";
+import { SolidMouseEvent } from "../Utils/interfaces";
 
 const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
+
+    let caseViewRef: HTMLDivElement;
+    onMount(() => {
+        const onClick = (e: MouseEvent) => setShow(
+            caseViewRef.contains(e.target as Node)
+            && // * Bellow, exludes self *
+            e.target !== caseViewRef
+        )
+        addEventListener("click", onClick)
+        onCleanup(() => removeEventListener("click", onClick));
+    })
+
+    function caseClicked(e: SolidMouseEvent<HTMLDivElement>) {
+        // ! Examine !
+        var rect = caseViewRef.getBoundingClientRect();
+        const relX = e.clientX + caseViewRef.scrollLeft - rect.left
+        const relY = e.clientY + caseViewRef.scrollTop - rect.top;
+        setPos({ x: relX, y: relY });
+    }
+
     return (
         <Wrapper>
             <HalfModified />
-            <Container>
+            <Container >
                 <TopText>Unlock Container</TopText>
                 <DescriptionText>Unlock <b>{name} Case</b> </DescriptionText>
                 <WarningOpen />
                 <ItemsText>Items that might be in this Container:</ItemsText>
-                <Seperator />
-                <CaseView>
+                <Seperator margin=".2rem 0 .65rem 0" />
+                <CaseView ref={caseViewRef}>
+                    <ContextMenu />
                     <For each={skins}>
-                        {skin => <Case {...skin} />}
+                        {skin => <Case onClick={caseClicked} {...skin} />}
                     </For>
                 </CaseView>
 
@@ -36,7 +59,7 @@ const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
                     </ButtonKeyBox>
                 </BottomKeyBox>
             </Container>
-        </Wrapper>
+        </Wrapper >
     );
 };
 

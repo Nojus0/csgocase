@@ -1,4 +1,4 @@
-import { Component, createSignal, onCleanup, onMount } from "solid-js";
+import { Component, createSignal, JSX, onCleanup, onMount, Show } from "solid-js";
 import { styled } from "solid-styled-components";
 import { caseEvents } from "../Interfaces/Events";
 import { GreenButton } from "./Buttons";
@@ -7,9 +7,9 @@ import UndragableImage from "../Utils/UndragableImage";
 import { CaseRarity } from "../Interfaces/colors";
 import { ISingleCase } from "../Interfaces/WeaponCase";
 
-const Case: Component<ISingleCase> = ({ skin, weapon, imageUrl, rarity }) => {
+const Case: Component<ISingleCase & JSX.HTMLAttributes<HTMLDivElement>> = ({ skin, weapon, imageUrl, rarity, ...rest }) => {
     return (
-        <Wrapper {...caseEvents} >
+        <Wrapper {...caseEvents} {...rest}>
             <ImageWrapper rarity={rarity}>
                 <UndragableImage width="7.85rem" height="7rem" src={imageUrl} />
             </ImageWrapper>
@@ -23,6 +23,7 @@ export default Case;
 
 const Wrapper = styled("div")({
     margin: ".5rem",
+    position: "relative"
 })
 
 interface IImageWrapperProps {
