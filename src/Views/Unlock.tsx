@@ -8,7 +8,7 @@ import { buttonEvents } from "../Interfaces/Events";
 import { MediumSpan, SecondText } from "../Components/Text";
 import UndragableImage from "../Utils/UndragableImage";
 import { ICompleteCase } from "../Interfaces/WeaponCase";
-import { ContextMenu, pos, setPos, setShow } from "../Components/ContextMenu";
+import { ContextMenu, } from "../Components/ContextMenu";
 import { SolidMouseEvent } from "../Utils/interfaces";
 
 const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {

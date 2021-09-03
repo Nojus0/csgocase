@@ -1,4 +1,4 @@
-import { Component, createSignal, Show } from "solid-js"
+import { Accessor, Component, createSignal, Show } from "solid-js"
 import { styled } from "solid-styled-components"
 import { buttonEvents, caseEvents } from "../Interfaces/Events";
 import { Vector2 } from "../Utils/interfaces";
@@ -22,28 +22,17 @@ const ContextEntry = styled("div")({
     }
 })
 
-// ! When you understand SolidJs stores and better state methods replace this !
-export const [show, setShow] = createSignal(false);
-export const [pos, setPos] = createSignal<Vector2>({ x: 0, y: 0 })
+interface IContextMenu {
+    show: Accessor<boolean>,
+    position: Accessor<Vector2>
+}
 
-export const ContextMenu: Component = () => {
-
-    function soundAndClose() {
-        buttonEvents.onClick();
-        setShow(false);
-    }
-
+export const ContextMenu: Component<IContextMenu> = ({ position, show, children }) => {
     return (
         <Show when={show()}>
-            <ContextWrapper style={{ left: `${pos().x}px`, top: `${pos().y}px` }}>
-                <ContextEntry onClick={soundAndClose} onMouseOver={caseEvents.onMouseOver}>
-                    <SecondText color="grey" shadow={false} fontWeight={500}>Inspect</SecondText>
-                </ContextEntry>
-                <ContextEntry onClick={soundAndClose} onMouseOver={caseEvents.onMouseOver}>
-                    <SecondText color="grey" shadow={false} fontWeight={500}>View On Market</SecondText>
-                </ContextEntry>
-            </ContextWrapper>
-        </Show>
+            <div style={{ left: `${position().x}px`, top: `${position().y}px`, position: "absolute", "z-index": 100 }}>
 
+            </div>
+        </Show>
     )
 }
