@@ -8,18 +8,27 @@ import { buttonEvents } from "../Interfaces/Events";
 import { MediumSpan, SecondText } from "../Components/Text";
 import UndragableImage from "../Utils/UndragableImage";
 import { ICompleteCase } from "../Interfaces/WeaponCase";
-import { ContextMenu, } from "../Components/ContextMenu";
-import { SolidMouseEvent } from "../Utils/interfaces";
+import { SolidMouseEvent, Vector2 } from "../Utils/interfaces";
+import { ContextMenu } from "../Components/ContextMenu";
+
+export const [show, setShow] = createSignal(false);
+export const [position, setPos] = createSignal<Vector2>({ x: 0, y: 0 });
 
 const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
 
     let caseViewRef: HTMLDivElement;
+    let contextRef: HTMLDivElement;
+
     onMount(() => {
-        const onClick = (e: MouseEvent) => setShow(
-            caseViewRef.contains(e.target as Node)
-            && // * Bellow, exludes self *
-            e.target !== caseViewRef
-        )
+        const onClick = (e: MouseEvent) => {
+            if(contextRef.contains(e.target as Node)) return;
+            
+            setShow(
+                caseViewRef.contains(e.target as Node)
+                && // * Bellow, exludes self *
+                e.target !== caseViewRef
+            )
+        }
         addEventListener("click", onClick)
         onCleanup(() => removeEventListener("click", onClick));
     })
@@ -29,7 +38,11 @@ const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
         var rect = caseViewRef.getBoundingClientRect();
         const relX = e.clientX + caseViewRef.scrollLeft - rect.left
         const relY = e.clientY + caseViewRef.scrollTop - rect.top;
-        setPos({ x: relX, y: relY });
+
+        const overflownRight = Math.max((e.x + contextRef.offsetWidth) - caseViewRef.offsetWidth, 0);
+        const overflowBottom = Math.max((relY + contextRef.offsetHeight) - caseViewRef.scrollHeight, 0);
+
+        setPos({ x: relX - overflownRight, y: relY - overflowBottom })
     }
 
     return (
@@ -41,8 +54,9 @@ const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
                 <WarningOpen />
                 <ItemsText>Items that might be in this Container:</ItemsText>
                 <Seperator margin=".2rem 0 .65rem 0" />
+
                 <CaseView ref={caseViewRef}>
-                    <ContextMenu />
+                    <ContextMenu ref={contextRef} show={show} position={position} />
                     <For each={skins}>
                         {skin => <Case onClick={caseClicked} {...skin} />}
                     </For>
@@ -93,6 +107,7 @@ const CaseView = styled("div")({
     justifyContent: "flex-start",
     flexWrap: "wrap",
     overflowY: "auto",
+    overflowX: "hidden",
     maxHeight: "80vh",
     borderRadius: ".15rem",
     "&::-webkit-scrollbar": {
