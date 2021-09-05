@@ -20,17 +20,36 @@ const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
     let contextRef: HTMLDivElement;
 
     onMount(() => {
-        const onClick = (e: MouseEvent) => {
-            if(contextRef.contains(e.target as Node)) return;
-            
+
+        const onClick = (e: SolidMouseEvent<HTMLElement>) => {
+            if (
+                // * If clicked on Context Menu
+                contextRef.contains(e.target as Node) ||
+                // * Or If currently not showing
+                !show()
+            ) return;
+
+            setShow(false);
+        }
+
+        const onContextMenu = (e: MouseEvent) => {
+            e.preventDefault();
+
+            if (contextRef.contains(e.target as Node)) return;
+
             setShow(
                 caseViewRef.contains(e.target as Node)
                 && // * Bellow, exludes self *
                 e.target !== caseViewRef
             )
         }
-        addEventListener("click", onClick)
-        onCleanup(() => removeEventListener("click", onClick));
+        addEventListener("click", onClick);
+        addEventListener("contextmenu", onContextMenu)
+
+        onCleanup(() => {
+            removeEventListener("contextmenu", onContextMenu)
+            removeEventListener("click", onClick);
+        });
     })
 
     function caseClicked(e: SolidMouseEvent<HTMLDivElement>) {
@@ -58,7 +77,7 @@ const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
                 <CaseView ref={caseViewRef}>
                     <ContextMenu ref={contextRef} show={show} position={position} />
                     <For each={skins}>
-                        {skin => <Case onClick={caseClicked} {...skin} />}
+                        {skin => <Case onContextMenu={caseClicked} {...skin} />}
                     </For>
                 </CaseView>
 

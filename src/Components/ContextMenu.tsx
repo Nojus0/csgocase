@@ -18,7 +18,7 @@ export const ContextMenu: Component<IContextMenu> = ({ position, show, ref }) =>
             <ContextEntry {...caseEvents} onClick={(e) => { setShow(false); caseEvents.onClick() }}>
                 <SecondText fontWeight={500} shadow={false}>Inspect</SecondText>
             </ContextEntry>
-            <ContextEntry {...caseEvents} onClick={(e) => { setShow(false); caseEvents.onClick() }}>
+            <ContextEntry {...caseEvents} >
                 <SecondText fontWeight={500} shadow={false}>View On Market</SecondText>
             </ContextEntry>
         </Menu >
