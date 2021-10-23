@@ -1,114 +1,59 @@
-import { Component, createSignal, For, onCleanup, onMount, Show } from "solid-js";
+import { Component, Show } from "solid-js";
 import { styled } from "solid-styled-components";
-import Case from "../Components/Case";
-import { GreenButton, TextButton } from "../Components/Buttons";
 import { CircleHalf } from "../Components/CircleHalf";
-import WarningOpen from "../Components/WarningOpen";
-import { buttonEvents } from "../Interfaces/Events";
-import { MediumSpan, SecondText } from "../Components/Text";
-import UndragableImage from "../Utils/UndragableImage";
 import { ICompleteCase } from "../Interfaces/WeaponCase";
-import { SolidMouseEvent, Vector2 } from "../Utils/interfaces";
-import { ContextMenu } from "../Components/ContextMenu";
+import { Vector2 } from "../Utils/interfaces";
+import { Opener } from "./Opener";
+import { createStore } from "solid-js/store";
+import { Header } from "../Components/Unlock/Header";
+import { CaseViewer } from "../Components/Unlock/CaseView";
+import { PlayAsync } from "../Utils/ChromeAudio";
+import { RelativeZindex } from "../Utils/Components";
+import { ButtonSection } from "../Components/Unlock/ButtonSection";
 
-export const [show, setShow] = createSignal(false);
-export const [position, setPos] = createSignal<Vector2>({ x: 0, y: 0 });
+export const [unlockStore, setStore] = createStore({
+    isOpening: false,
+    showOpening: false,
+
+    showContextMenu: false,
+    position: { x: 0, y: 0 } as Vector2,
+
+    setPos(e: Vector2) {
+        setStore("position", e)
+    },
+    setContextMenu(val: boolean) {
+        setStore("showContextMenu", val);
+    }
+})
 
 const Unlock: Component<ICompleteCase> = ({ name, skins, keyImg }) => {
 
-    let caseViewRef: HTMLDivElement;
-    let contextRef: HTMLDivElement;
+    PlayAsync({ src: "/bg_anubis_01.wav", replayWhenAvailable: true, vol: 0.15, loop: true });
+    PlayAsync({ src: "/case_drop_01.wav", replayWhenAvailable: true, vol: 0.15 });
 
-    onMount(() => {
-
-        const onClick = (e: SolidMouseEvent<HTMLElement>) => {
-            if (
-                // * If clicked on Context Menu
-                contextRef.contains(e.target as Node) ||
-                // * Or If currently not showing
-                !show()
-            ) return;
-
-            setShow(false);
-        }
-
-        const onContextMenu = (e: MouseEvent) => {
-            e.preventDefault();
-
-            if (contextRef.contains(e.target as Node)) return;
-
-            setShow(
-                caseViewRef.contains(e.target as Node)
-                && // * Bellow, exludes self *
-                e.target !== caseViewRef
-            )
-        }
-        addEventListener("click", onClick);
-        addEventListener("contextmenu", onContextMenu)
-
-        onCleanup(() => {
-            removeEventListener("contextmenu", onContextMenu)
-            removeEventListener("click", onClick);
-        });
-    })
-
-    function caseClicked(e: SolidMouseEvent<HTMLDivElement>) {
-        // ! Examine !
-        var rect = caseViewRef.getBoundingClientRect();
-        const relX = e.clientX + caseViewRef.scrollLeft - rect.left
-        const relY = e.clientY + caseViewRef.scrollTop - rect.top;
-
-        const overflownRight = Math.max((e.x + contextRef.offsetWidth) - caseViewRef.offsetWidth, 0);
-        const overflowBottom = Math.max((relY + contextRef.offsetHeight) - caseViewRef.scrollHeight, 0);
-
-        setPos({ x: relX - overflownRight, y: relY - overflowBottom })
-    }
 
     return (
-        <Wrapper>
-            <HalfModified />
-            <Container >
-                <TopText>Unlock Container</TopText>
-                <DescriptionText>Unlock <b>{name} Case</b> </DescriptionText>
-                <WarningOpen />
-                <ItemsText>Items that might be in this Container:</ItemsText>
-                <Seperator margin=".2rem 0 .65rem 0" />
+        <RelativeZindex zindex={10}>
+            <Wrapper>
+                <HalfModified />
+                <Container >
+                    <Header caseName={name} />
 
-                <CaseView ref={caseViewRef}>
-                    <ContextMenu ref={contextRef} show={show} position={position} />
-                    <For each={skins}>
-                        {skin => <Case onContextMenu={caseClicked} {...skin} />}
-                    </For>
-                </CaseView>
+                    <CaseViewer cases={skins} />
 
-                <Seperator color="grey" margin="1.5rem 0 .65rem 0" width="clamp(1px, 100%, 37.5rem)" />
+                    <Show when={unlockStore.showOpening}>
+                        <Opener cases={skins} />
+                    </Show>
 
-                <BottomKeyBox>
-                    <KeyImg height="7rem" width="7rem" src={keyImg} />
-                    <SecondText align="center" size="1.05rem" shadow={false}>This action requires a <MediumSpan>{name} Case Key</MediumSpan></SecondText>
-                    <ButtonKeyBox>
-                        <GreenButton {...buttonEvents}>Unlock Container</GreenButton>
-                        <TextButton {...buttonEvents}>Close</TextButton>
-                    </ButtonKeyBox>
-                </BottomKeyBox>
-            </Container>
-        </Wrapper >
+                    <ButtonSection caseName={name} keyImg={keyImg} />
+                </Container>
+            </Wrapper >
+        </RelativeZindex>
     );
 };
 
 export default Unlock;
 
-const TopText = styled("h1")({
-    color: "#CDCCC9",
-    minHeight: "2rem",
-    fontWeight: 500,
-    margin: "1rem 0 0 0"
-})
-const DescriptionText = styled("p")({
-    color: "#CDCCC9",
-    minHeight: "1rem",
-    margin: ".5rem 0 0 0"
-})
 
 const Wrapper = styled("div")({
     width: "100vw",
@@ -119,59 +64,16 @@ const Wrapper = styled("div")({
     alignItems: "center",
 })
 
-const CaseView = styled("div")({
-    display: "flex",
-    alignItems: "center",
-    position: "relative",
-    justifyContent: "flex-start",
-    flexWrap: "wrap",
-    overflowY: "auto",
-    overflowX: "hidden",
-    maxHeight: "80vh",
-    borderRadius: ".15rem",
-    "&::-webkit-scrollbar": {
-        width: "10px"
-    },
-    "&::-webkit-scrollbar-track": {
-        borderRadius: "15rem",
-        background: "#444444"
-    },
-    "&::-webkit-scrollbar-thumb": {
-        borderRadius: "5rem",
-        background: "#2e2e2e"
-    },
-    "&::-webkit-scrollbar-thumb:hover": {
-        background: "#2e2e2e"
-    }
-})
 
 
-const ItemsText = styled("p")({
-    alignSelf: "flex-start",
-    color: "#CDCCC9",
-    margin: ".85rem 0 .5rem 0"
-})
-
-interface ISeperator {
-    width?: string,
-    color?: string,
-    margin?: string
-}
-
-const Seperator = styled("div")(({ width = "100%", color = "#CDCCC9", margin = "0" }: ISeperator) => ({
-    width,
-    margin,
-    height: ".08rem",
-    background: color,
-}))
 
 const Container = styled("div")({
     width: "clamp(1px, 95vw, 100%)",
     height: "100vh",
+    position: "relative",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    // justifyContent: "center"
 })
 
 const HalfModified = styled(CircleHalf)({
@@ -180,28 +82,4 @@ const HalfModified = styled(CircleHalf)({
     zIndex: -1,
     left: "50%",
     transform: "translate(-50%, -50%)",
-})
-
-const BottomKeyBox = styled("div")({
-    display: "flex",
-    // flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: "0 0 1rem 0"
-
-})
-
-const ButtonKeyBox = styled("div")({
-    display: "flex",
-    justifyContent: "center",
-    padding: "0 0 0 1rem",
-    "button": {
-        margin: "0 .25rem"
-    }
-})
-
-const KeyImg = styled(UndragableImage)({
-    "@media only screen and (max-width: 700px)": {
-        display: "none"
-    }
 })

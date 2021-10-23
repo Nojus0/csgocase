@@ -22,13 +22,13 @@ export const CircleHalf = styled("div")({
         content: "''",
         zIndex: 1,
         transform: "translate(-50%, -50%)",
-        width: "13rem",
-        height: "7rem",
-        top: "60%",
+        width: "12rem",
+        height: "6rem",
+        top: "59%",
         left: "50%",
         borderBottomRightRadius: "100rem",
         borderBottomLeftRadius: "100rem",
         borderBottom: "0",
-        backgroundColor: "rgba(0,0,0,0.05)",
+        backgroundColor: "rgba(0,0,0,0.1)",
     }
 })

@@ -1,28 +1,32 @@
 import { Accessor, Component, createEffect, createSignal, Show } from "solid-js"
 import { styled } from "solid-styled-components"
-import { buttonEvents, caseEvents } from "../Interfaces/Events";
+import { caseEvents } from "../Interfaces/Events";
 import { Vector2 } from "../Utils/interfaces";
-import { setShow } from "../Views/Unlock";
-import { MainText, SecondText } from "./Text";
+import { unlockStore } from "../Views/Unlock";
+import { SecondText } from "./Text";
 
 interface IContextMenu {
     show: Accessor<boolean>,
     position: Accessor<Vector2>,
-    ref?: HTMLDivElement
+    ref: HTMLDivElement | ((el: HTMLDivElement) => void)
 }
 
-export const ContextMenu: Component<IContextMenu> = ({ position, show, ref }) => {
+export const ContextMenu: Component<IContextMenu> = (props) => {
+
+    function inspect() {
+        unlockStore.setContextMenu(false)
+        caseEvents.onClick()
+    }
 
     return (
-        <Menu ref={ref} style={{ left: `${position().x}px`, top: `${position().y}px`, visibility: show() ? "visible" : "hidden" }}>
-            <ContextEntry {...caseEvents} onClick={(e) => { setShow(false); caseEvents.onClick() }}>
+        <Menu ref={props.ref} style={{ left: `${props.position().x}px`, top: `${props.position().y}px`, visibility: props.show() ? "visible" : "hidden" }}>
+            <ContextEntry {...caseEvents} onClick={inspect}>
                 <SecondText fontWeight={500} shadow={false}>Inspect</SecondText>
             </ContextEntry>
             <ContextEntry {...caseEvents} >
                 <SecondText fontWeight={500} shadow={false}>View On Market</SecondText>
             </ContextEntry>
         </Menu >
-
     )
 }
 

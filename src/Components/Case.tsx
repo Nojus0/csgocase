@@ -1,7 +1,6 @@
 import { Component, createSignal, JSX, onCleanup, onMount, Show } from "solid-js";
 import { styled } from "solid-styled-components";
 import { caseEvents } from "../Interfaces/Events";
-import { GreenButton } from "./Buttons";
 import { MainText, SecondText } from "./Text";
 import UndragableImage from "../Utils/UndragableImage";
 import { CaseRarity } from "../Interfaces/colors";
@@ -11,7 +10,7 @@ const Case: Component<ISingleCase & JSX.HTMLAttributes<HTMLDivElement>> = ({ ski
     return (
         <Wrapper {...caseEvents} {...rest}>
             <ImageWrapper rarity={rarity}>
-                <UndragableImage width="7.85rem" height="7rem" src={imageUrl} />
+                <Image width="7.85rem" height="7rem" style={{ "background-image": `url(${imageUrl})` }} />
             </ImageWrapper>
             <MainText>{weapon}</MainText>
             <SecondText>{skin}</SecondText>
@@ -30,9 +29,13 @@ interface IImageWrapperProps {
     rarity: CaseRarity
 }
 
+const Image = styled(UndragableImage)({
+    marginLeft: "0.3rem",
+})
+
 const ImageWrapper = styled("div")(({ rarity }: IImageWrapperProps) => ({
     background: "linear-gradient(0deg, #797879 0%, #303134 100%);",
-    maxWidth: "7.85rem",
+    maxWidth: "8.15rem",
     display: "flex",
     flexDirection: "column",
     position: "relative",

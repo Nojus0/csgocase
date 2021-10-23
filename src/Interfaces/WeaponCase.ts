@@ -16,7 +16,7 @@ export type IWeapon = IAssaultRifles | ISniperRifles | ISMGS | IMachineGuns | IS
 export type ISpecialItem = "★ Rare Special Item ★"
 
 export interface ISingleCase {
-    weapon: IWeapon | ISpecialItem,
+    weapon: IWeapon | ISpecialItem | "",
     skin: string,
     rarity: CaseRarity
     imageUrl: string

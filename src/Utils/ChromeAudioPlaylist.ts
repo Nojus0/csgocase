@@ -5,7 +5,8 @@ export const [didInteract, setInteract] = createSignal(false);
 
 let functionPlayList: Array<Function> = []
 
-addEventListener("click", documentInteract)
+addEventListener("mousedown", documentInteract)
+
 function documentInteract() {
     setInteract(true);
     functionPlayList.forEach(func => func());

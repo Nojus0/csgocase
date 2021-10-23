@@ -4,9 +4,10 @@ export const MainText = styled("h1")({
     margin: 0,
     marginTop: ".35rem",
     fontWeight: 500,
+    // maxWidth: "7.85rem",
     color: "white",
     letterSpacing: "1px",
-    fontSize: "1rem",
+    fontSize: ".90rem",
     textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25);",
     minHeight: "1rem",
 })

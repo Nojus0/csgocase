@@ -112,7 +112,7 @@ const PrismaCase: ICompleteCase = {
             weapon: "★ Rare Special Item ★",
             skin: "",
             rarity: CaseRarity.yellow,
-            imageUrl: ""
+            imageUrl: "/special.png"
         }
     ]
 }

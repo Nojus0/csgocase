@@ -3,27 +3,13 @@ import { styled } from "solid-styled-components";
 import PrismaCase from "./Interfaces/Prisma";
 import { isBlured, setBlured } from "./Store/GlobalStore";
 import { PlayAsync } from "./Utils/ChromeAudio";
+import { RelativeZindex } from "./Utils/Components";
 import Unlock from "./Views/Unlock";
-
-const VideoBackground = styled("video")((props: { blured: boolean }) => ({
-  position: "absolute",
-  top: 0,
-  width: "100vw",
-  objectFit: "fill",
-  filter: props.blured ? "blur(.65rem)" : "",
-  transition: "filter 250ms ease-in-out",
-  height: "100vh"
-}))
 
 const WholeWrapper = styled("div")({
   position: "relative",
   display: "flex",
 })
-
-const RelativeZindex = styled("div")((props: { zindex: number }) => ({
-  position: "relative",
-  zIndex: props.zindex
-}))
 
 const BackgroundImage = styled("div")(({ blured }: { blured: boolean }) => ({
   backgroundImage: `url(/anubis.jpg)`,
@@ -39,10 +25,6 @@ const BackgroundImage = styled("div")(({ blured }: { blured: boolean }) => ({
 
 const App: Component = () => {
 
-
-  PlayAsync({ src: "/bg_anubis_01.wav", replayWhenAvailable: true, vol: 0.15, loop: true });
-  PlayAsync({ src: "/case_drop_01.wav", replayWhenAvailable: true, vol: 0.15 });
-
   return (
     <WholeWrapper>
 
@@ -50,9 +32,8 @@ const App: Component = () => {
         <BackgroundImage blured={isBlured()} />
       </RelativeZindex>
 
-      <RelativeZindex zindex={10}>
-        <Unlock {...PrismaCase} />
-      </RelativeZindex>
+      <Unlock {...PrismaCase} />
+
 
     </WholeWrapper>
   );
