@@ -1,4 +1,13 @@
-import { CaseRarity } from "./colors";
+export enum CaseRarity {
+    default = '#6a6156',
+    common = '#b0c3d9',
+    uncommon = '#5e98d9',
+    blue = '#4b69ff',
+    purple = '#8847ff',
+    pink = '#d32ce6',
+    red = "#eb4b4b",
+    yellow = '#ffd700'
+}
 
 export type IAssaultRifles = "AK-47" | "AUG" | "FAMAS" | "Galil AR" | "M4A1-S" | "M4A4" | "SG 553";
 export type ISniperRifles = "AWP" | "G3SG1" | "SCAR-20" | "SSG 08";
@@ -27,4 +36,7 @@ export interface ICompleteCase {
     description: string,
     keyImg: string
     skins: Array<ISingleCase>
+}
+export interface ICompleteCaseProps {
+    case: ICompleteCase
 }

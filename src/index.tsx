@@ -1,8 +1,10 @@
 import { Route, Router, Routes } from "solid-app-router";
-import { lazy } from "solid-js";
+import { Component, createEffect, createResource, createSignal, lazy, onMount } from "solid-js";
 import { render } from "solid-js/web";
 import { createGlobalStyles } from "solid-styled-components";
-import App from "./App";
+import CaseView from "./CaseView";
+import { ICompleteCase } from "./Interfaces";
+const prisma_case = import("./Interfaces/Prisma");
 
 const GlobalStyles = createGlobalStyles({
     "*": {
@@ -15,14 +17,32 @@ const GlobalStyles = createGlobalStyles({
     }
 })
 
-render(() => (
-    <>
-        <GlobalStyles />
-        <Router>
-            <Routes>
-                <Route path="/" element={<App />} />
-            </Routes>
-        </Router>
-    </>
+const loading_case: ICompleteCase = {
+    name: "Loading",
+    description: "",
+    keyImg: "",
+    skins: []
+}
 
-), document.getElementById("root"));
+const Root: Component = () => {
+
+    const [currentCase, setCurrentCase] = createSignal<ICompleteCase>(loading_case)
+
+    onMount(async () => {
+        const loaded = await prisma_case;
+        setCurrentCase(loaded.default);
+    })
+
+    return (
+        <>
+            <GlobalStyles />
+            <Router>
+                <Routes>
+                    <Route path="/" element={<CaseView case={currentCase()} />} />
+                </Routes>
+            </Router>
+        </>
+    )
+}
+
+render(() => <Root />, document.getElementById("root"));

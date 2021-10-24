@@ -1,6 +1,5 @@
 import { Component } from "solid-js";
 import { styled } from "solid-styled-components";
-import { SecondText } from "./Text";
 
 const WarnText = styled("p")({
     fontWeight: 400,

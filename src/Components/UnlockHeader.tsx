@@ -1,16 +1,17 @@
 import { Component } from "solid-js";
 import { styled } from "solid-styled-components";
-import WarningOpen from "../WarningOpen";
+import { ICompleteCase, ICompleteCaseProps } from "../Interfaces/WeaponCase";
+import WarningOpen from "./WarningOpen";
 
 interface IHeaderProps {
     caseName: string
 }
 
-export const Header: Component<IHeaderProps> = ({caseName: name}) => {
+export const Header: Component<ICompleteCaseProps> = (props) => {
     return (
         <TopWrapper>
             <TopText>Unlock Container</TopText>
-            <DescriptionText>Unlock <b>{name} Case</b> </DescriptionText>
+            <DescriptionText>Unlock <b>{props.case.name} Case</b> </DescriptionText>
             <WarningOpen />
         </TopWrapper>
     )

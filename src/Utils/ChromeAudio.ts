@@ -1,5 +1,3 @@
-import { addToPlaylist, didInteract } from "./ChromeAudioPlaylist";
-
 const syncAudio = new Audio();
 
 interface IPlaySync {
@@ -8,7 +6,7 @@ interface IPlaySync {
 }
 
 export function PlaySync({ src, vol = 1.0 }: IPlaySync) {
-    if (!syncAudio.paused || !didInteract()) return;
+    // * Is playing * 
     syncAudio.src = src;
     syncAudio.volume = vol;
     syncAudio.play();
@@ -23,15 +21,9 @@ interface IPlayAsync {
 
 export function PlayAsync({
     loop = false,
-    replayWhenAvailable = false,
     src,
     vol = 1.0,
 }: IPlayAsync) {
-
-    if (replayWhenAvailable && !didInteract()) {
-        return addToPlaylist(() => PlayAsync({ loop, replayWhenAvailable, vol, src }))
-    } else if (!didInteract()) return;
-    
     const audio = new Audio(src);
     audio.volume = vol;
     audio.loop = loop;

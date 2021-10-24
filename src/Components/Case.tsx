@@ -1,10 +1,9 @@
 import { Component, createSignal, JSX, onCleanup, onMount, Show } from "solid-js";
 import { styled } from "solid-styled-components";
 import { caseEvents } from "../Interfaces/Events";
-import { MainText, SecondText } from "./Text";
-import UndragableImage from "../Utils/UndragableImage";
-import { CaseRarity } from "../Interfaces/colors";
 import { ISingleCase } from "../Interfaces/WeaponCase";
+import { MainText, SecondText, undragableImage } from "./Styled";
+import { CaseRarity } from "../Interfaces";
 
 const Case: Component<ISingleCase & JSX.HTMLAttributes<HTMLDivElement>> = ({ skin, weapon, imageUrl, rarity, ...rest }) => {
     return (
@@ -29,7 +28,7 @@ interface IImageWrapperProps {
     rarity: CaseRarity
 }
 
-const Image = styled(UndragableImage)({
+const Image = styled(undragableImage)({
     marginLeft: "0.3rem",
 })
 

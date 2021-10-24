@@ -1,7 +1,6 @@
-import { CaseRarity } from "./colors";
-import { ICompleteCase } from "./WeaponCase";
+import { CaseRarity, ICompleteCase } from ".";
 
-const PrismaCase: ICompleteCase = {
+const prisma_case: ICompleteCase = {
     name: "Prisma",
     keyImg: "https://community.akamai.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXX7gNTPcUxuxpJSXPbQv2S1MDeXkh6LBBOiej3ZQU0hvKRIjhA7d_nzILbxKCtZ-OJkD1X7pIljruWpIimigewrUs_ZmDtZNjCXfJP2mM/360fx360f",
     description: "Todo",
@@ -117,4 +116,4 @@ const PrismaCase: ICompleteCase = {
     ]
 }
 
-export default PrismaCase;
+export default prisma_case;
