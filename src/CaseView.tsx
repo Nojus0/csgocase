@@ -1,9 +1,25 @@
-import { Component, createSignal, For, onCleanup, onMount, Show } from "solid-js";
+import {
+  Component,
+  createSignal,
+  For,
+  onCleanup,
+  onMount,
+  Show,
+} from "solid-js";
 import { styled } from "solid-styled-components";
 import Case from "./Components/Case";
-import { CircleHalf, GreenButton, MediumSpan, RelativeZindex, SecondText, Seperator, TextButton } from "./Components/Styled";
+import {
+  CircleHalf,
+  GreenButton,
+  MediumSpan,
+  RelativeZindex,
+  SecondText,
+  Seperator,
+  TextButton,
+  undragableImage,
+} from "./Components/Styled";
 import { Header } from "./Components/UnlockHeader";
-import { isBlured, } from "./Store/GlobalStore";
+import { isBlured } from "./Store/GlobalStore";
 import { PlayAsync } from "./Utils/ChromeAudio";
 import { ICompleteCaseProps } from "./Interfaces";
 import { Transition, TransitionGroup } from "solid-transition-group";
@@ -11,16 +27,21 @@ import { moveY } from "./animations/Move";
 import { caseStore } from "./Store/CaseStore";
 import { buttonEvents } from "./Interfaces/Events";
 const CaseView: Component<ICompleteCaseProps> = (props) => {
+  PlayAsync({
+    src: "/bg_anubis_01.wav",
+    vol: 1,
+    loop: true,
+    replayWhenAvailable: true,
+  });
 
-  PlayAsync({ src: "/bg_anubis_01.wav", vol: 0.15, loop: true });
-  PlayAsync({ src: "/case_drop_01.wav", vol: 0.15 });
+  PlayAsync({ src: "/case_drop_01.wav", vol: 1, replayWhenAvailable: true });
 
   return (
     <>
       <Background />
       <Wrapper>
         <HalfModified />
-        <Container >
+        <Container>
           <Header case={props.case} />
 
           <Transition {...moveY(300, "15rem")}>
@@ -34,7 +55,7 @@ const CaseView: Component<ICompleteCaseProps> = (props) => {
 
           <Transition {...moveY(300, "15rem")}>
             <Show when={!caseStore.isOpening}>
-              <DivViewer >
+              <DivViewer>
                 <For each={props.case.skins}>
                   {(skin) => <Case {...skin} />}
                 </For>
@@ -44,7 +65,11 @@ const CaseView: Component<ICompleteCaseProps> = (props) => {
 
           <Transition {...moveY(200, "5rem")}>
             <BottomKeyBox>
-              <KeyImg height="7rem" width="7rem" style={{ "background-image": `url(${props.case.keyImg})` }} />
+              <KeyImg
+                height="7rem"
+                width="7rem"
+                style={{ "background-image": `url(${props.case.keyImg})` }}
+              />
               <SecondText align="center" size="1.05rem" shadow={false}>
                 This action requires a
                 <MediumSpan>{props.case.name} Case Key</MediumSpan>
@@ -55,9 +80,8 @@ const CaseView: Component<ICompleteCaseProps> = (props) => {
               </ButtonKeyBox>
             </BottomKeyBox>
           </Transition>
-
         </Container>
-      </Wrapper >
+      </Wrapper>
     </>
   );
 };
@@ -69,14 +93,12 @@ const Background: Component = () => {
     <RelativeZindex zindex={1}>
       <BackgroundImage blured={isBlured()} />
     </RelativeZindex>
-  )
-}
+  );
+};
 
 const FullWidthDiv = styled("div")({
   width: "100%",
 });
-
-
 
 const DivViewer = styled("div")({
   display: "flex",
@@ -121,7 +143,7 @@ const BackgroundImage = styled("div")(({ blured }: { blured: boolean }) => ({
   objectFit: "fill",
   filter: blured ? "blur(.65rem)" : "",
   transition: "filter 250ms ease-in-out",
-}))
+}));
 
 const Wrapper = styled("div")({
   width: "100vw",
@@ -132,7 +154,7 @@ const Wrapper = styled("div")({
   zIndex: 10,
   position: "relative",
   alignItems: "center",
-})
+});
 
 const Container = styled("div")({
   width: "clamp(1px, 95vw, 100%)",
@@ -141,7 +163,7 @@ const Container = styled("div")({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-})
+});
 
 const HalfModified = styled(CircleHalf)({
   position: "absolute",
@@ -149,8 +171,7 @@ const HalfModified = styled(CircleHalf)({
   zIndex: -1,
   left: "50%",
   transform: "translate(-50%, -50%)",
-})
-
+});
 
 const BottomKeyBox = styled("div")({
   display: "flex",
@@ -159,21 +180,20 @@ const BottomKeyBox = styled("div")({
   bottom: 0,
   alignItems: "center",
   justifyContent: "center",
-  margin: "0 0 1rem 0"
-
-})
+  margin: "0 0 1rem 0",
+});
 
 const ButtonKeyBox = styled("div")({
   display: "flex",
   justifyContent: "center",
   padding: "0 0 0 1rem",
-  "button": {
-    margin: "0 .25rem"
-  }
-})
+  button: {
+    margin: "0 .25rem",
+  },
+});
 
 const KeyImg = styled(undragableImage)({
   "@media only screen and (max-width: 700px)": {
-    display: "none"
-  }
-})
+    display: "none",
+  },
+});
