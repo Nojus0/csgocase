@@ -6,9 +6,9 @@ export const buttonEvents = {
 }
 
 export const caseEvents = {
-    onMouseOver: () => PlaySync({ src: "/itemtile_rollover_09.wav", vol: 0.1 }),
+    onMouseOver: () => PlaySync({ src: "/itemtile_rollover_09.wav", vol: 0.2 }),
     onClick: () => {
-        PlayAsync({ src: "/sidemenu_rollover_02.wav", vol: 0.2 })
+        PlayAsync({ src: "/sidemenu_rollover_02.wav", vol: 0.3 })
     },
     onContextMenu: (e: MouseEvent) => {
         e.preventDefault();

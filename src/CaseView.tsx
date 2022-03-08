@@ -1,11 +1,4 @@
-import {
-  Component,
-  createSignal,
-  For,
-  onCleanup,
-  onMount,
-  Show,
-} from "solid-js";
+import { Component, For, Show } from "solid-js";
 import { styled } from "solid-styled-components";
 import Case from "./Components/Case";
 import {
@@ -22,10 +15,10 @@ import { Header } from "./Components/UnlockHeader";
 import { isBlured } from "./Store/GlobalStore";
 import { PlayAsync } from "./Utils/ChromeAudio";
 import { ICompleteCaseProps } from "./Interfaces";
-import { Transition, TransitionGroup } from "solid-transition-group";
+import { Transition } from "solid-transition-group";
 import { moveY } from "./animations/Move";
-import { caseStore } from "./Store/CaseStore";
 import { buttonEvents } from "./Interfaces/Events";
+
 const CaseView: Component<ICompleteCaseProps> = (props) => {
   PlayAsync({
     src: "/bg_anubis_01.wav",
@@ -45,22 +38,16 @@ const CaseView: Component<ICompleteCaseProps> = (props) => {
           <Header case={props.case} />
 
           <Transition {...moveY(300, "15rem")}>
-            <Show when={!caseStore.isOpening}>
-              <FullWidthDiv>
-                <ItemsText>Items that might be in this Container:</ItemsText>
-                <Seperator margin=".2rem 0 .65rem 0" />
-              </FullWidthDiv>
-            </Show>
+            <FullWidthDiv>
+              <ItemsText>Items that might be in this Container:</ItemsText>
+              <Seperator margin=".2rem 0 .65rem 0" />
+            </FullWidthDiv>
           </Transition>
 
           <Transition {...moveY(300, "15rem")}>
-            <Show when={!caseStore.isOpening}>
-              <DivViewer>
-                <For each={props.case.skins}>
-                  {(skin) => <Case {...skin} />}
-                </For>
-              </DivViewer>
-            </Show>
+            <DivViewer>
+              <For each={props.case.skins}>{(skin) => <Case {...skin} />}</For>
+            </DivViewer>
           </Transition>
 
           <Transition {...moveY(200, "5rem")}>
