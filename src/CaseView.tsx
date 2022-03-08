@@ -58,7 +58,7 @@ const CaseView: Component<ICompleteCaseProps> = (props) => {
                 style={{ "background-image": `url(${props.case.keyImg})` }}
               />
               <SecondText align="center" size="1.05rem" shadow={false}>
-                This action requires a
+                This action requires a 
                 <MediumSpan>{props.case.name} Case Key</MediumSpan>
               </SecondText>
               <ButtonKeyBox>
