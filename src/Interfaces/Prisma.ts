@@ -1,4 +1,4 @@
-import { CaseRarity, ICompleteCase } from ".";
+import { CaseRarity, ICompleteCase } from "./index";
 
 const prisma_case: ICompleteCase = {
     name: "Prisma",

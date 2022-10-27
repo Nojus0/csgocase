@@ -1,5 +1,5 @@
 import { Route, Router, Routes } from "solid-app-router";
-import { Component, createEffect, createResource, createSignal, lazy, onMount } from "solid-js";
+import { Component, createSignal, onMount } from "solid-js";
 import { render } from "solid-js/web";
 import { createGlobalStyles } from "solid-styled-components";
 import CaseView from "./CaseView";

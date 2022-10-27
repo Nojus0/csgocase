@@ -1,7 +1,7 @@
-import { Component, createSignal, JSX, onCleanup, onMount, Show } from "solid-js";
+import { Component, JSX, } from "solid-js";
 import { styled } from "solid-styled-components";
 import { caseEvents } from "../Interfaces/Events";
-import { ISingleCase } from "../Interfaces/WeaponCase";
+import { ISingleCase } from "../Interfaces/index";
 import { MainText, SecondText, undragableImage } from "./Styled";
 import { CaseRarity } from "../Interfaces";
 
