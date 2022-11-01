@@ -9,6 +9,21 @@
   Cache-Control = "public, max-age=604800, immutable"
 
 [[headers]]
+  for = "*.png"
+  [headers.values]
+  Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "*.jpg"
+  [headers.values]
+  Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
+  for = "*.jpeg"
+  [headers.values]
+  Cache-Control = "public, max-age=604800, immutable"
+
+[[headers]]
   for = "*.ogg"
   [headers.values]
   Cache-Control = "public, max-age=604800, immutable"
