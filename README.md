@@ -1,5 +1,7 @@
 # CS:GO Case
-[![Open in Codeflow](https://developer.stackblitz.com/img/open_in_codeflow.svg)](https:///pr.new/Nojus0/cs-go-case)
+
+[![Contribute with Gitpod](https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/Nojus0/cs-go-case)
+[![Open in Codeflow](https://developer.stackblitz.com/img/open_in_codeflow_small.svg)](https:///pr.new/Nojus0/cs-go-case)
 
 CS:GO case opening 'simulator' written in Solid.js can be easily expanded with more features. Currently it is really easy to add new cases, but you can't open them you can 
 just view them.
